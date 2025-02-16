@@ -2,6 +2,10 @@
     background-color: #3DD5F3;
 }
 
+.bg-adm-nav{
+    background-color: #6C757D;
+}
+
 .text-tertiary{
     color: rgba(0, 0, 0, 0.20);
 }
