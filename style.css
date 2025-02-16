@@ -1,3 +1,7 @@
 .bg-nav{
     background-color: #3DD5F3;
 }
+
+.text-tertiary{
+    color: rgba(0, 0, 0, 0.20);
+}
