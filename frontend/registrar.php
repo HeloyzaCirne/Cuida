@@ -18,7 +18,7 @@
               <a class="nav-link text-secondary" aria-current="page" href="./index.php">Em alta</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-secondary" href="./meuseventos.php">Meus eventos</a>
+              <a class="nav-link text-secondary" href="<?php if( isset($_REQUEST['email']) ){ echo'./meuseventos.php?email='.$_REQUEST['email']; } else{ echo './registrar.php'; }?>">Meus eventos</a>
             </li>
             <li class="nav-item">
               <a class="nav-link active text-light" href="#">Entre/Registre-se</a>
