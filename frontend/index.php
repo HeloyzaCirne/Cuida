@@ -3,7 +3,7 @@
 $conexao = new PDO('pgsql:host=127.0.0.1;port=5432;dbname=cuida','postgres', '1234');
 
 if ($conexao) {
-  $select = "SELECT * FROM eventos";
+  $select = "SELECT eventos.identificador, eventos.titulo, eventos.cidade, categorias.nome as categoria FROM eventos INNER JOIN categorias ON eventos.categoria = categorias.identificador";
       
   $comandoSelect = $conexao->query($select);
 }
@@ -57,13 +57,54 @@ if ($conexao) {
           </tr>
         </thead></a>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Bode Elétrico</td>
-            <td>Parelhas</td>
-            <td>100000</td>
-            <td><a href="#">detalhes</a></td>
-          </tr>
+          <?php
+            while($evento = $comandoSelect->fetch()){
+              $titulo        = $evento['titulo'];
+              $cidade        = $evento['cidade'];
+              $categoria     = $evento['categoria'];
+              $identificador = $evento['identificador'];
+              
+              if(isset($_REQUEST['email'])){
+                $email = $_REQUEST['email'];
+                echo "<tr>
+                        <td>
+                          $identificador
+                        </td>
+                        <td>
+                          $titulo
+                        </td>
+                        <td>
+                          $cidade
+                        </td>
+                        <td>
+                          $categoria
+                        </td>
+                        <td>
+                          <a href='./evento.php?identificador=$identificador&email=$email'> detalhes </a>
+                        </td>
+                      </tr>";
+              }
+              else{
+                echo "<tr>
+                        <td>
+                          $identificador
+                        </td>
+                        <td>
+                          $titulo
+                        </td>
+                        <td>
+                          $cidade
+                        </td>
+                        <td>
+                          $categoria
+                        </td>
+                        <td>
+                          <a href='./registrar.php'> detalhes </a>
+                        </td>
+                      </tr>";
+              }
+            }
+          ?>
         </tbody>
       </table>
     </div>

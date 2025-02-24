@@ -1,7 +1,19 @@
 <?php 
-if(isset($_REQUEST['email'])){
-  
+
+$conexao = new PDO('pgsql:host=127.0.0.1;port=5432;dbname=cuida','postgres', '1234');
+
+if ($conexao) {
+  $select_usuario = "SELECT identificador FROM usuarios WHERE email='".$_REQUEST['email']."'";
+
+  $comandoSelectUsuario = $conexao->query($select_usuario);
+
+  $id_usuario = $comandoSelectUsuario->fetch();
+
+  $select = "SELECT eventos.identificador, eventos.titulo, eventos.cidade, categorias.nome as categoria FROM inscricoes INNER JOIN eventos ON inscricoes.evento_id = eventos.identificador INNER JOIN categorias ON eventos.categoria = categorias.identificador WHERE inscricoes.usuario_id = $id_usuario[0]";
+      
+  $comandoSelect = $conexao->query($select);
 }
+
 ?>
 
 <!doctype html>
@@ -51,13 +63,32 @@ if(isset($_REQUEST['email'])){
         </tr>
       </thead></a>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Bode Elétrico</td>
-          <td>Parelhas</td>
-          <td>100000</td>
-          <td><a href="#">detalhes</a></td>
-        </tr>
+      <?php
+            while($evento = $comandoSelect->fetch()){
+              $titulo        = $evento['titulo'];
+              $cidade        = $evento['cidade'];
+              $categoria     = $evento['categoria'];
+              $identificador = $evento['identificador'];
+              $email         = $_REQUEST['email'];
+                echo "<tr>
+                        <td>
+                          $identificador
+                        </td>
+                        <td>
+                          $titulo
+                        </td>
+                        <td>
+                          $cidade
+                        </td>
+                        <td>
+                          $categoria
+                        </td>
+                        <td>
+                          <a href='./evento.php?identificador=$identificador&email=$email'> detalhes </a>
+                        </td>
+                      </tr>";
+            }
+      ?>      
       </tbody>
     </table>
   </div>
