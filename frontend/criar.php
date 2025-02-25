@@ -4,14 +4,8 @@ $conexao = new PDO('pgsql:host=127.0.0.1;port=5432;dbname=cuida','postgres', '12
 
 if ($conexao) {
   $email = $_REQUEST['email'];
-  
-  $select_usuario = "SELECT identificador FROM usuarios WHERE email='".$_REQUEST['email']."'";
 
-  $comandoSelectUsuario = $conexao->query($select_usuario);
-
-  $id_usuario = $comandoSelectUsuario->fetch();
-
-  $select = "SELECT eventos.identificador, eventos.titulo, eventos.cidade, categorias.nome as categoria FROM eventos INNER JOIN categorias ON eventos.categoria = categorias.identificador WHERE eventos.adm = '$id_usuario[0]'";
+  $select = "SELECT * FROM categorias";
       
   $comandoSelect = $conexao->query($select);
 }
@@ -27,10 +21,11 @@ if ($conexao) {
     <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   </head>
-  <body style="background: #F0F0F0;">
-    <nav class="navbar navbar-expand-lg bg-adm-nav shadow vw-100">
+  <body class="d-flex flex-column" style="background: #F0F0F0;">
+
+  <nav class="navbar navbar-expand-lg bg-adm-nav shadow">
         <div class="container-fluid">
-          <a class="navbar-brand" href="./index.php"><h1 class="display-1 fw-medium text-light">Cuida!<span class="h1 fst-italic">adm</span></h1></a>
+          <a class="navbar-brand" href="#"><h1 class="display-1 fw-medium text-light">Cuida!<span class="h1 fst-italic">adm</span></h1></a>
           <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
@@ -50,52 +45,43 @@ if ($conexao) {
         </div>
       </nav>
 
-      <div class="d-flex px-5 py-4 flex-wrap gap-4 justify-content-start">
-				<h2 class="display-2 ms-5 fw-medium text-light fst-italic" style="letter-spacing: -4px; text-shadow: -4px 4px 0px rgba(0, 0, 0, 0.20); -webkit-text-stroke-width: 1px;-webkit-text-stroke-color: rgba(0, 0, 0, 0.08);"> Seus Eventos: 
-        <button type="button" class="btn btn-warning text-white"><a href="../frontend/criar.php<?php echo "?&email=$email" ?>" class="text-white">Criar evento</a></button>
-      </h2>
-
-        <table class="table table-bordered text-light"> 
-          <a href="#"><thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Nome</th>
-              <th scope="col">Cidade</th>
-              <th scope="col">Categoria</th>
-              <th scope="col">Detalhes</th>
-            </tr>
-          </thead></a>
-          <tbody>
-          <?php
-            while($evento = $comandoSelect->fetch()){
-              $titulo        = $evento['titulo'];
-              $cidade        = $evento['cidade'];
-              $categoria     = $evento['categoria'];
-              $identificador = $evento['identificador'];
-              $email         = $_REQUEST['email'];
-              echo "<tr>
-                      <td>
-                        $identificador
-                      </td>
-                      <td>
-                        $titulo
-                      </td>
-                      <td>
-                        $cidade
-                      </td>
-                      <td>
-                        $categoria
-                      </td>
-                      <td>
-                        <a href='./eventoadm.php?identificador=$identificador&email=$email'> detalhes </a>
-                      </td>
-                    </tr>";
-            }
-          ?>
-          </tbody>
-        </table>
-
+    <form action="../backend/criar.php<?php  echo "?email=$email" ?>" method="post" class="d-flex flex-column align-items-center align-self-center mb-5">
+      <h1 class="text-secondary"> Crie um Evento </h1>
+      <div class="mb-3">
+          <label class="form-label">Título</label>
+          <div class="input-group">
+              <span class="input-group-text">@</span>
+              <input type="text" class="form-control" placeholder="título" id="email" name="titulo">
+          </div>
       </div>
+      <div class="mb-3">
+          <label class="form-label">Descrição</label>
+          <div class="input-group">
+              <span class="input-group-text">@</span>
+              <input type="text" class="form-control" placeholder="Descrição" name="descricao">
+          </div>
+      </div>
+      <div class="mb-3">
+          <label class="form-label">Cidade</label>
+          <div class="input-group">
+              <span class="input-group-text">@</span>
+              <input type="text" class="form-control" placeholder="Cidade" name="cidade">
+          </div>
+      </div>
+      <select class="form-select mb-3" aria-label="Default select example" name="categoria">
+          <option selected hidden>Categoria</option>
+          <?php
+                while($categorias = $comandoSelect->fetch()){
+                  $nome     = $categorias['nome'];
+                  $id       = $categorias['identificador'];
+                  echo "<option value=$id>$nome</option>";
+                }
+          ?>
+      </select>
+      <input type="date" name="data" class="mb-2">
+      <input type="time" name="hora" class="mb-2" id="">
+      <button type="submit" class="btn btn-primary w-50">Criar</button>
+    </form>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>
 </html>

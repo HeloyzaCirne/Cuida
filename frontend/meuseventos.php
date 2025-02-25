@@ -60,6 +60,7 @@ if ($conexao) {
           <th scope="col">Cidade</th>
           <th scope="col">Categoria</th>
           <th scope="col">Detalhes</th>
+          <th scope="col">Remover</th>
         </tr>
       </thead></a>
       <tbody>
@@ -85,6 +86,9 @@ if ($conexao) {
                         </td>
                         <td>
                           <a href='./evento.php?identificador=$identificador&email=$email'> detalhes </a>
+                        </td>
+                        <td>
+                          <a href='../backend/removerInscricao.php?identificador=$identificador&email=$email'> remover </a>
                         </td>
                       </tr>";
             }

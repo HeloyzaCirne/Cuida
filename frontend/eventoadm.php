@@ -1,3 +1,28 @@
+<?php 
+
+$conexao = new PDO('pgsql:host=127.0.0.1;port=5432;dbname=cuida','postgres', '1234');
+
+if ($conexao) {
+  $email = $_REQUEST['email'];
+  $eventoId = $_REQUEST['identificador'];
+
+  $select_usuario = "SELECT identificador FROM usuarios WHERE email='".$_REQUEST['email']."'";
+
+  $comandoSelectUsuario = $conexao->query($select_usuario);
+
+  $id_usuario = $comandoSelectUsuario->fetch();
+
+  $select1 = "SELECT eventos.titulo, eventos.descricao, eventos.data_hora, usuarios.nome as adm  FROM eventos INNER JOIN usuarios ON eventos.adm = usuarios.identificador WHERE eventos.identificador = ".$_REQUEST['identificador'];
+  $select2 = "SELECT usuarios.nome, usuarios.email FROM inscricoes INNER JOIN usuarios ON usuario_id = usuarios.identificador WHERE evento_id = ".$_REQUEST['identificador'];
+
+  $comandoSelect1 = $conexao->query($select1);
+  $evento         = $comandoSelect1->fetch();
+
+  $comandoSelect2 = $conexao->query($select2);
+}
+
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -6,16 +31,15 @@
     <title>Bootstrap demo</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
   </head>
-  <body class="d-flex justify-content-center flex-column align-items-center" style="background: #F0F0F0;">
-    <nav class="navbar navbar-expand-lg bg-adm-nav shadow vw-100">
+  <body style="background: #E2E6ED;">
+  <nav class="navbar navbar-expand-lg bg-adm-nav shadow">
         <div class="container-fluid">
           <a class="navbar-brand" href="#"><h1 class="display-1 fw-medium text-light">Cuida!<span class="h1 fst-italic">adm</span></h1></a>
           <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active text-light" aria-current="page" href="#">Meus eventos</a>
+                <a class="nav-link active text-light" aria-current="page" href="<?php  echo "./adm.php?email=$email" ?>">Meus eventos</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#"></a>
@@ -30,36 +54,68 @@
           </div>
         </div>
       </nav>
+		
+    <div class="vh-100 w-25 bg-adm-nav bg-gradient d-inline-flex align-items-center flex-column pt-5">
+      <h1 class="display-6 fw-medium text-light text-center mb-3" style="text-shadow: -3px 2px 0px rgba(15, 15, 15, 0.2); -webkit-text-stroke-width: 1px;-webkit-text-stroke-color: rgba(0, 0, 0, 0.08);"><?php echo $evento['titulo'] ?></h1>
+      <button type="button" class="btn btn-warning text-white"><a href="../backend/apagar.php<?php echo "?identificador=$eventoId&email=$email" ?>" class="text-white">Apagar evento</a></button>
+    </div>
+	<div class="d-inline-flex w-50 ms-5 ps-5 gap-4 flex-wrap justify-content-center"  >
+		<div class="d-flex align-items-center flex-column">
+			<h2 class="display-2 fw-medium text-light" style="text-shadow: -4px 4px 0px rgba(0, 0, 0, 0.20); -webkit-text-stroke-width: 1px;-webkit-text-stroke-color: rgba(0, 0, 0, 0.08);"> Data </h2>
+			<ul>
+				<li class=" fw-medium text-tertiary" > <?php $data = date_create($evento['data_hora']); echo date_format($data, "d/m/Y") ?> </li>
+			</ul>
+		</div>
+		<div class="d-flex align-items-center flex-column">
+			<h2 class="display-4 fw-medium text-light pt-2" style="text-shadow: -4px 4px 0px rgba(0, 0, 0, 0.20); -webkit-text-stroke-width: 1px;-webkit-text-stroke-color: rgba(0, 0, 0, 0.08);"> Organização </h2>
+			<ul>
+				<li class=" fw-medium text-tertiary" > <?php echo $evento['adm'] ?> </li>
+			</ul>
+		</div>
+		<div class="d-flex align-items-center flex-column">
+			<h2 class="display-4 fw-medium text-light" style="text-shadow: -4px 4px 0px rgba(0, 0, 0, 0.20); -webkit-text-stroke-width: 1px;-webkit-text-stroke-color: rgba(0, 0, 0, 0.08);"> Descrição </h2>
+			<ul>
+				<li class=" fw-medium text-tertiary" > <?php echo $evento['descricao'] ?> </li>
+			</ul>
+		</div>
+		<div class="d-flex align-items-center flex-column">
+			<h2 class="display-4 fw-medium text-light" style="text-shadow: -4px 4px 0px rgba(0, 0, 0, 0.20); -webkit-text-stroke-width: 1px;-webkit-text-stroke-color: rgba(0, 0, 0, 0.08);"> Horário </h2>
+			<ul>
+				<li class=" fw-medium text-tertiary" > <?php $data = date_create($evento['data_hora']); echo date_format($data, "h:i:s") ?> </li>
+			</ul>
+		</div>
+		<div class="d-flex align-items-center flex-column">
+			<h2 class="display-4 fw-medium text-light" style="text-shadow: -4px 4px 0px rgba(0, 0, 0, 0.20); -webkit-text-stroke-width: 1px;-webkit-text-stroke-color: rgba(0, 0, 0, 0.08);"> Inscritos </h2>
+			
+      <table class="table table-bordered text-light"> 
+              <a href="#"><thead>
+                <tr>
+                  <th scope="col">Nome</th>
+                  <th scope="col">Email</th>
+                </tr>
+              </thead></a>
+              <tbody>
+              <?php
+                while($inscricoes = $comandoSelect2->fetch()){
+                  $nome        = $inscricoes['nome'];
+                  $email       = $inscricoes['email'];
+                  echo "<tr>
+                          <td>
+                            $nome
+                          </td>
+                          <td>
+                            $email
+                          </td>
+                        </tr>";
+                }
+              ?>
+        </tbody>
+      </table>
 
-      <form action="" class="w-50 text-tertiary d-flex flex-column align-items-center">
-				<h2 class="display-2 fw-medium text-light" style="text-shadow: -4px 4px 0px rgba(0, 0, 0, 0.20); -webkit-text-stroke-width: 1px;-webkit-text-stroke-color: rgba(0, 0, 0, 0.08);"> Crie seu evento </h2>
-        
+		</div>
+	</div>
 
-        <div class="input-group mb-3">
-          <span class="input-group-text" id="inputGroup-sizing-default">Nome</span>
-          <input type="text" class="form-control" placeholder="Nome do evento" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-        </div>
-        <div class="input-group mb-3">
-          <span class="input-group-text">Descrição</span>
-          <textarea class="form-control" aria-label="With textarea"></textarea>
-        </div>
-        <div class="input-group mb-3">
-          <label class="input-group-text" for="inputGroupSelect01">Categoria</label>
-          <select class="form-select" id="inputGroupSelect01">
-            <option selected>Escolha...</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
-        </div>        
-        <div class="input-group mb-3">
-          <span class="input-group-text" id="inputGroup-sizing-default">Data</span>
-          <input type="text" class="form-control" placeholder="xx/xx/xxxx" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-        </div>
-        <button type="submit" class="btn btn-primary">Criar</button>
-
-      </form>
-      
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>
 </html>
