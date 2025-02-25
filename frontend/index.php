@@ -1,6 +1,6 @@
 <?php 
 
-$conexao = new PDO('pgsql:host=127.0.0.1;port=5432;dbname=cuida','postgres', '1234');
+$conexao = new PDO('pgsql:host=127.0.0.1;port=5432;dbname=postgres','postgres', '1234');
 
 if ($conexao) {
   $select = "SELECT eventos.identificador, eventos.titulo, eventos.cidade, categorias.nome as categoria FROM eventos INNER JOIN categorias ON eventos.categoria = categorias.identificador";
