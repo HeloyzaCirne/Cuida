@@ -51,7 +51,7 @@ if ($conexao) {
           <label class="form-label">Título</label>
           <div class="input-group">
               <span class="input-group-text">@</span>
-              <input type="text" class="form-control" placeholder="título" id="email" name="titulo">
+              <input type="text" class="form-control" placeholder="título" name="titulo">
           </div>
       </div>
       <div class="mb-3">

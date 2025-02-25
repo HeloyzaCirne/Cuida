@@ -2,8 +2,8 @@
   $conexao = new PDO('pgsql:host=127.0.0.1;port=5432;dbname=cuida','postgres', '1234');
 
     if ($conexao) {
-      $email = $_POST['email'];
-      $senha = $_POST['senha'];
+      $email = $_REQUEST['email'];
+      $senha = $_REQUEST['senha'];
       
       
       $select = "SELECT * FROM usuarios WHERE email='$email' AND senha='$senha'";

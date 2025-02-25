@@ -61,31 +61,31 @@ if ($conexao) {
     </div>
 	<div class="d-inline-flex w-50 ms-5 ps-5 gap-4 flex-wrap justify-content-center"  >
 		<div class="d-flex align-items-center flex-column">
-			<h2 class="display-2 fw-medium text-light" style="text-shadow: -4px 4px 0px rgba(0, 0, 0, 0.20); -webkit-text-stroke-width: 1px;-webkit-text-stroke-color: rgba(0, 0, 0, 0.08);"> Data </h2>
+			<h1 class="text-secondary"> Data </h1>
 			<ul>
 				<li class=" fw-medium text-tertiary" > <?php $data = date_create($evento['data_hora']); echo date_format($data, "d/m/Y") ?> </li>
 			</ul>
 		</div>
 		<div class="d-flex align-items-center flex-column">
-			<h2 class="display-4 fw-medium text-light pt-2" style="text-shadow: -4px 4px 0px rgba(0, 0, 0, 0.20); -webkit-text-stroke-width: 1px;-webkit-text-stroke-color: rgba(0, 0, 0, 0.08);"> Organização </h2>
+			<h1 class="text-secondary"> Organização </h1>
 			<ul>
 				<li class=" fw-medium text-tertiary" > <?php echo $evento['adm'] ?> </li>
 			</ul>
 		</div>
 		<div class="d-flex align-items-center flex-column">
-			<h2 class="display-4 fw-medium text-light" style="text-shadow: -4px 4px 0px rgba(0, 0, 0, 0.20); -webkit-text-stroke-width: 1px;-webkit-text-stroke-color: rgba(0, 0, 0, 0.08);"> Descrição </h2>
+			<h1 class="text-secondary"> Descrição </h1>
 			<ul>
 				<li class=" fw-medium text-tertiary" > <?php echo $evento['descricao'] ?> </li>
 			</ul>
 		</div>
 		<div class="d-flex align-items-center flex-column">
-			<h2 class="display-4 fw-medium text-light" style="text-shadow: -4px 4px 0px rgba(0, 0, 0, 0.20); -webkit-text-stroke-width: 1px;-webkit-text-stroke-color: rgba(0, 0, 0, 0.08);"> Horário </h2>
+			<h1 class="text-secondary"> Horário </h1>
 			<ul>
 				<li class=" fw-medium text-tertiary" > <?php $data = date_create($evento['data_hora']); echo date_format($data, "h:i:s") ?> </li>
 			</ul>
 		</div>
 		<div class="d-flex align-items-center flex-column">
-			<h2 class="display-4 fw-medium text-light" style="text-shadow: -4px 4px 0px rgba(0, 0, 0, 0.20); -webkit-text-stroke-width: 1px;-webkit-text-stroke-color: rgba(0, 0, 0, 0.08);"> Inscritos </h2>
+    <h1 class="text-secondary"> Inscritos </h1>
 			
       <table class="table table-bordered text-light"> 
               <a href="#"><thead>
