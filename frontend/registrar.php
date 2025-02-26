@@ -77,7 +77,7 @@
           </div>
       </div>
       <select class="form-select mb-3" aria-label="Default select example" name="tipo">
-          <option selected hidden>Qual seu objetivo?</option>
+          <option selected>Qual seu objetivo?</option>
           <option value="usuario">Participar de eventos</option>
           <option value="admin">Criar eventos</option>
       </select>

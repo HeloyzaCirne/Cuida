@@ -1,5 +1,5 @@
 <?php 
-  $conexao = new PDO('pgsql:host=127.0.0.1;port=5432;dbname=postgres','postgres', '1234');
+  $conexao = new PDO('pgsql:host=127.0.0.1;port=5432;dbname=cuida','postgres', '1234');
 
   if ($conexao) {
 		$email = $_REQUEST['email'];
